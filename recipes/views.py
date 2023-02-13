@@ -3,9 +3,20 @@ from django.http import HttpResponse
 
 from utils.recipes.factory import make_recipe
 
+from .models import Recipe, Category
+
 
 def home(request):
-    context = {'recipes': [make_recipe() for _ in range(10)],}
+    recipes = Recipe.objects.all().order_by('-id')
+    context = {'recipes': recipes}
+    return render(request, 'recipes/pages/home.html', context)
+
+
+def category(request, category_id):
+    recipes = Recipe.objects.filter(
+        category__id=category_id
+        ).order_by('-id')
+    context = {'recipes': recipes,}
     return render(request, 'recipes/pages/home.html', context)
 
 
