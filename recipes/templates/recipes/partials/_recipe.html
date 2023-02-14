@@ -13,6 +13,7 @@
     </div>
 
     <div class="recipe-author">
+        {% if recipe.author is not None %}
         <span class="recipe-author-item">
             <i class="fas fa-user"></i>
                 {% if recipe.author.first_name %}
@@ -21,19 +22,21 @@
                     {{ recipe.author.username }}
                 {% endif %}
         </span>
+    {% endif %}
 
         <span class="recipe-author-item">
             <i class="fas fa-calendar-alt"></i>
             {{ recipe.created_at|date:"d/m/Y" }}
         </span>
 
-        <span class="recipe-author-item">
-            <a href="{% url 'recipes:category' recipe.category.id %}">
-                <i class="fas fa-layer-group"></i>
-                <span>{{ recipe.category.name  }}</span>
-            </a>
-        </span>
-
+        {% if recipe.category is not None %}
+            <span class="recipe-author-item">
+                <a href="{% url 'recipes:category' recipe.category.id %}">
+                    <i class="fas fa-layer-group"></i>
+                    <span>{{ recipe.category.name  }}</span>
+                </a>
+            </span>
+        {% endif %}
     </div>
 
     <div class="recipe-content">
@@ -56,12 +59,12 @@
             </div>
         </div>
     </div>
-    
+
     {% if not is_datail_page %}
 
         <footer class="recipe-footer">
             
-            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'recipes:recipe' 2 %}">
+            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'recipes:recipe' recipe.id %}">
                 <i class="fas fa-eye"></i>
                 <span>ver mais...</span>
             </a>
@@ -69,10 +72,19 @@
         
     {% endif %}
 
-    {% if is_detail_page %}
+    {% if is_detail_page is True %}
+
         <div class="preparation-steps">
-            {{ recipe.preparation_steps|linebreaksbr }}
+
+            {% if recipe.preparation_steps_is_html is True %}
+                {{ recipe.preparation_steps|safe }}
+
+            {% else %}
+                {{ recipe.preparation_steps|linebreaksbr }}
+            {% endif %}
+
         </div>
+
     {% endif %}
 
 </div>
