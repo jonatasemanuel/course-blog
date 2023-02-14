@@ -258,3 +258,17 @@ h1,h2,h3,h4,h5,h6 {
     filter: brightness(.8);
     transition: all 300ms ease-in-out;
 }
+
+.preparation-steps h1,
+.preparation-steps h2,
+.preparation-steps h3,
+.preparation-steps p,
+.preparation-steps ol,
+.preparation-steps ul,
+.preparation-steps pre {
+    margin: 1rem 0;
+}
+
+.center {
+    text-align: center;
+}
