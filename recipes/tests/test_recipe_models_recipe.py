@@ -17,7 +17,7 @@ class RecipeModelTest(RecipeTestBase):
             author=self.make_author(username='newuser'),
             title='Recipe Title',
             description='Recipe Description',
-            slug='recipe-slug',
+            slug='recipe-slug-for-no-default',
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,
@@ -40,7 +40,7 @@ class RecipeModelTest(RecipeTestBase):
         with self.assertRaises(ValidationError):
             self.recipe.full_clean()
 
-    @skip('w.i.p')
+    @skip('wip')
     def test_recipe_preparation_steps_is_html_is_false_by_default(self):
         recipe = self.make_recipe_no_defaults()
         self.assertFalse(
