@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
@@ -47,9 +48,24 @@ def search(request):
     if not search_term:
         raise Http404()
 
+    recipes = Recipe.objects.filter(
+        # like as (sql), can use 'i' in contains to ignore de case sensitive
+        Q(
+            Q(title__icontains=search_term) | Q(
+                description__icontains=search_term),
+        ),
+        is_published=True
+    ).order_by('-id')
+
+    # Substituido pelo Q de fora sendo um AND,
+    # apos a busca interna q conten o OR ( | )
+    # recipes = recipes.filter(is_published=True)
+    # recipes = recipes.order_by('-id')
+
     context = {
         'page_title': f'Search for "{search_term}"',
-        'search_term': search_term
+        'search_term': search_term,
+        'recipes': recipes,
     }
 
     return render(request, 'recipes/pages/search.html', context)
