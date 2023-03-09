@@ -1,0 +1,7 @@
+{% if recipes.has_other_pages %}
+    <div class="conteiner paginator">
+        {% for page in paginator_range.pagination  %}
+            {{ page }}
+        {% endfor %}
+    </div>
+{% endif %}
