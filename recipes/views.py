@@ -1,3 +1,5 @@
+import os
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import Http404, HttpResponse
@@ -8,6 +10,8 @@ from utils.pagination import make_pagination_range
 from .models import Recipe
 
 # from utils.recipes.factory import make_recipe
+
+PER_PAGE = int(os.environ.get('PER_PAGE', 4))
 
 
 def home(request):
@@ -21,7 +25,7 @@ def home(request):
     except ValueError:
         current_page = 1
 
-    paginator = Paginator(recipes, 2)
+    paginator = Paginator(recipes, PER_PAGE)
     page_obj = paginator.get_page(current_page)
 
     pagination_range = make_pagination_range(
